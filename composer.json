@@ -18,5 +18,8 @@
         "psr-4": {
             "Suth\\UpdateServer\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "classmap": ["tests/TestCase.php"]   
     }
 }
