@@ -1,6 +1,10 @@
 <?php
 
-namepace Suth\UpdateServer;
+namespace Suth\UpdateServer;
+
+use Countable;
+use ArrayAccess;
+use IteratorAggregate;
 
 class Headers implements ArrayAccess, IteratorAggregate, Countable
 {

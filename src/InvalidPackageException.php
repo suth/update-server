@@ -1,5 +1,5 @@
 <?php
 
-namepace Suth\UpdateServer;
+namespace Suth\UpdateServer;
 
 class InvalidPackageException extends RuntimeException {}

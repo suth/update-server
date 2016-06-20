@@ -1,6 +1,6 @@
 <?php
 
-namepace Suth\UpdateServer;
+namespace Suth\UpdateServer;
 
 use Michelf\Markdown;
 

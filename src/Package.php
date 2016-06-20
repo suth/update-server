@@ -9,7 +9,7 @@
  * file and store the actual download elsewhere - or even generate it on the fly.
  */
 
-namepace Suth\UpdateServer;
+namespace Suth\UpdateServer;
 
 use ZipMetadataParser;
 
