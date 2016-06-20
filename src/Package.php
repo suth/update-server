@@ -8,8 +8,13 @@
  * However, you could also load plugin information from the database or a configuration
  * file and store the actual download elsewhere - or even generate it on the fly.
  */
-class Wpup_Package {
 
+namepace Suth\UpdateServer;
+
+use ZipMetadataParser;
+
+class Package
+{
 	/** @var string Path to the Zip archive that contains the plugin or theme. */
 	protected $filename;
 
@@ -60,11 +65,11 @@ class Wpup_Package {
 	 *
 	 * @param string $filename Path to a Zip archive that contains a WP plugin or theme.
 	 * @param string $slug Optional plugin or theme slug. Will be detected automatically.
-	 * @param Wpup_Cache $cache
-	 * @return Wpup_Package
+	 * @param Cache $cache
+	 * @return Package
 	 */
-	public static function fromArchive($filename, $slug = null, Wpup_Cache $cache = null) {
-		$metaObj = new Wpup_ZipMetadataParser($slug, $filename, $cache);
+	public static function fromArchive($filename, $slug = null, Cache $cache = null) {
+		$metaObj = new ZipMetadataParser($slug, $filename, $cache);
 		$metadata = $metaObj->get();
 
 		if ( $slug === null && isset($metadata['slug']) ) {

@@ -1,8 +1,11 @@
 <?php
-/**
- * Simple request class for the update server.
- */
-class Wpup_Request {
+
+namepace Suth\UpdateServer;
+
+use Headers;
+
+class Request
+{
 	/** @var array Query parameters. */
 	public $query = array();
 	/** @var string Client's IP address. */
@@ -13,7 +16,7 @@ class Wpup_Request {
 	public $action;
 	/** @var string Plugin or theme slug from the current request. */
 	public $slug;
-	/** @var Wpup_Package The package that matches the current slug, if any. */
+	/** @var Package The package that matches the current slug, if any. */
 	public $package = null;
 
 	/** @var string WordPress version number as extracted from the User-Agent header. */
@@ -26,7 +29,7 @@ class Wpup_Request {
 
 	public function __construct($query, $headers, $clientIp = '0.0.0.0', $httpMethod = 'GET') {
 		$this->query = $query;
-		$this->headers = new Wpup_Headers($headers);
+		$this->headers = new Headers($headers);
 		$this->clientIp = $clientIp;
 		$this->httpMethod = strtoupper($httpMethod);
 

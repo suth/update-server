@@ -1,9 +1,12 @@
 <?php
-/**
- * This class represents the metadata from one specific WordPress plugin or theme.
- */
-class Wpup_ZipMetadataParser {
 
+namepace Suth\UpdateServer;
+
+use Cache;
+use InvalidPackageException;
+
+class ZipMetadataParser
+{
 	/**
 	 * @var int $cacheTime  How long the package metadata should be cached in seconds.
 	 *                      Defaults to 1 week ( 7 * 24 * 60 * 60 ).
@@ -49,7 +52,7 @@ class Wpup_ZipMetadataParser {
 	protected $slug;
 
 	/**
-	 * @var Wpup_Cache Cache object.
+	 * @var Cache Cache object.
 	 */
 	protected $cache;
 
@@ -64,9 +67,9 @@ class Wpup_ZipMetadataParser {
 	 *
 	 * @param string $slug
 	 * @param string $filename
-	 * @param Wpup_Cache $cache
+	 * @param Cache $cache
 	 */
-	public function __construct($slug, $filename, Wpup_Cache $cache = null){
+	public function __construct($slug, $filename, Cache $cache = null){
 		$this->slug = $slug;
 		$this->filename = $filename;
 		$this->cache = $cache;
@@ -115,7 +118,7 @@ class Wpup_ZipMetadataParser {
 	 * See this page for an overview of the plugin metadata format:
 	 * @link https://spreadsheets.google.com/pub?key=0AqP80E74YcUWdEdETXZLcXhjd2w0cHMwX2U1eDlWTHc&authkey=CK7h9toK&hl=en&single=true&gid=0&output=html
 	 *
-	 * @throws Wpup_InvalidPackageException if the input file can't be parsed as a plugin or theme.
+	 * @throws InvalidPackageException if the input file can't be parsed as a plugin or theme.
 	 */
 	protected function extractMetadata(){
 		$this->packageInfo = WshWordPressPackageParser::parsePackage($this->filename, true);
@@ -125,7 +128,7 @@ class Wpup_ZipMetadataParser {
 			$this->setLastUpdateDate();
 			$this->setSlug();
 		} else {
-			throw new Wpup_InvalidPackageException( sprintf('The specified file %s does not contain a valid WordPress plugin or theme.', $this->filename));
+			throw new InvalidPackageException( sprintf('The specified file %s does not contain a valid WordPress plugin or theme.', $this->filename));
 		}
 	}
 

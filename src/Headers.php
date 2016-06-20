@@ -1,5 +1,9 @@
 <?php
-class Wpup_Headers implements ArrayAccess, IteratorAggregate, Countable {
+
+namepace Suth\UpdateServer;
+
+class Headers implements ArrayAccess, IteratorAggregate, Countable
+{
 	protected $headers = array();
 
 	/**

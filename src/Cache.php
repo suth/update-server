@@ -1,8 +1,9 @@
 <?php
-/**
- * A very basic cache interface.
- */
-interface Wpup_Cache {
+
+namepace Suth\UpdateServer;
+
+interface Cache
+{
 	/**
 	 * Get cached value.
 	 *

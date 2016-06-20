@@ -1,11 +1,21 @@
 <?php
-class Wpup_UpdateServer {
+
+namepace Suth\UpdateServer;
+
+use Headers;
+use Package;
+use Request;
+use FileCache;
+use InvalidPackageException;
+
+class UpdateServer
+{
 	protected $packageDirectory;
 	protected $logDirectory;
 	protected $cache;
 	protected $serverUrl;
 	protected $startTime = 0;
-	protected $packageFileLoader = array('Wpup_Package', 'fromArchive');
+	protected $packageFileLoader = array('Package', 'fromArchive');
 
 	public function __construct($serverUrl = null, $serverDirectory = null) {
 		if ( $serverDirectory === null ) {
@@ -18,7 +28,7 @@ class Wpup_UpdateServer {
 		$this->serverUrl = $serverUrl;
 		$this->packageDirectory = $serverDirectory . '/packages';
 		$this->logDirectory = $serverDirectory . '/logs';
-		$this->cache = new Wpup_FileCache($serverDirectory . '/cache');
+		$this->cache = new FileCache($serverDirectory . '/cache');
 	}
 
 	/**
@@ -95,25 +105,25 @@ class Wpup_UpdateServer {
 	 *
 	 * @param array $query
 	 * @param array $headers
-	 * @return Wpup_Request
+	 * @return Request
 	 */
 	protected function initRequest($query = null, $headers = null) {
 		if ( $query === null ) {
 			$query = $_GET;
 		}
 		if ( $headers === null ) {
-			$headers = Wpup_Headers::parseCurrent();
+			$headers = Headers::parseCurrent();
 		}
 		$clientIp = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
 		$httpMethod = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
 
-		return new Wpup_Request($query, $headers, $clientIp, $httpMethod);
+		return new Request($query, $headers, $clientIp, $httpMethod);
 	}
 
 	/**
 	 * Load the requested package into the request instance.
 	 *
-	 * @param Wpup_Request $request
+	 * @param Request $request
 	 */
 	protected function loadPackageFor($request) {
 		if ( empty($request->slug) ) {
@@ -122,7 +132,7 @@ class Wpup_UpdateServer {
 
 		try {
 			$request->package = $this->findPackage($request->slug);
-		} catch (Wpup_InvalidPackageException $ex) {
+		} catch (InvalidPackageException $ex) {
 			$this->exitWithError(sprintf(
 				'Package "%s" exists, but it is not a valid plugin or theme. ' .
 				'Make sure it has the right format (Zip) and directory structure.',
@@ -135,7 +145,7 @@ class Wpup_UpdateServer {
 	/**
 	 * Basic request validation. Every request must specify an action and a valid package slug.
 	 *
-	 * @param Wpup_Request $request
+	 * @param Request $request
 	 */
 	protected function validateRequest($request) {
 		if ( $request->action === '' ) {
@@ -152,7 +162,7 @@ class Wpup_UpdateServer {
 	/**
 	 * Run the requested action.
 	 *
-	 * @param Wpup_Request $request
+	 * @param Request $request
 	 */
 	protected function dispatch($request) {
 		if ( $request->action === 'get_metadata' ) {
@@ -167,9 +177,9 @@ class Wpup_UpdateServer {
 	/**
 	 * Retrieve package metadata as JSON. This is the primary function of the custom update API.
 	 *
-	 * @param Wpup_Request $request
+	 * @param Request $request
 	 */
-	protected function actionGetMetadata(Wpup_Request $request) {
+	protected function actionGetMetadata(Request $request) {
 		$meta = $request->package->getMetadata();
 		$meta['download_url'] = $this->generateDownloadUrl($request->package);
 
@@ -189,7 +199,7 @@ class Wpup_UpdateServer {
 	 * to conditionally exclude the download_url based on query parameters.
 	 *
 	 * @param array $meta
-	 * @param Wpup_Request $request
+	 * @param Request $request
 	 * @return array Filtered metadata.
 	 */
 	protected function filterMetadata($meta, $request) {
@@ -207,9 +217,9 @@ class Wpup_UpdateServer {
 	 * from the WordPress dashboard, but technically they could also download and
 	 * install it manually.
 	 *
-	 * @param Wpup_Request $request
+	 * @param Request $request
 	 */
-	protected function actionDownload(Wpup_Request $request) {
+	protected function actionDownload(Request $request) {
 		//Required for IE, otherwise Content-Disposition may be ignored.
 		if(ini_get('zlib.output_compression')) {
 			@ini_set('zlib.output_compression', 'Off');
@@ -228,7 +238,7 @@ class Wpup_UpdateServer {
 	 * Find a plugin or theme by slug.
 	 *
 	 * @param string $slug
-	 * @return Wpup_Package A package object or NULL if the plugin/theme was not found.
+	 * @return Package A package object or NULL if the plugin/theme was not found.
 	 */
 	protected function findPackage($slug) {
 		//Check if there's a slug.zip file in the package directory.
@@ -254,10 +264,10 @@ class Wpup_UpdateServer {
 	/**
 	 * Create a download URL for a plugin.
 	 *
-	 * @param Wpup_Package $package
+	 * @param Package $package
 	 * @return string URL
 	 */
-	protected function generateDownloadUrl(Wpup_Package $package) {
+	protected function generateDownloadUrl(Package $package) {
 		$query = array(
 			'action' => 'download',
 			'slug' => $package->slug,
@@ -268,7 +278,7 @@ class Wpup_UpdateServer {
 	/**
 	 * Log an API request.
 	 *
-	 * @param Wpup_Request $request
+	 * @param Request $request
 	 */
 	protected function logRequest($request) {
 		$logFile = $this->logDirectory . '/request.log';
