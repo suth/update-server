@@ -15,7 +15,7 @@ class UpdateServer
 	protected $cache;
 	protected $serverUrl;
 	protected $startTime = 0;
-	protected $packageFileLoader = array('Package', 'fromArchive');
+	protected $packageFileLoader = array(Package::class, 'fromArchive');
 
 	public function __construct($serverUrl = null, $serverDirectory = null) {
 		if ( $serverDirectory === null ) {
