@@ -2,8 +2,8 @@
 
 namespace Suth\UpdateServer;
 
-use Cache;
-use InvalidPackageException;
+use Suth\UpdateServer\Cache;
+use Suth\UpdateServer\InvalidPackageException;
 
 class ZipMetadataParser
 {

@@ -11,7 +11,7 @@
 
 namespace Suth\UpdateServer;
 
-use ZipMetadataParser;
+use Suth\UpdateServer\ZipMetadataParser;
 
 class Package
 {

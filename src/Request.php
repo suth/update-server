@@ -2,7 +2,7 @@
 
 namespace Suth\UpdateServer;
 
-use Headers;
+use Suth\UpdateServer\Headers;
 
 class Request
 {

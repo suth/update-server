@@ -2,11 +2,11 @@
 
 namespace Suth\UpdateServer;
 
-use Headers;
-use Package;
-use Request;
-use FileCache;
-use InvalidPackageException;
+use Suth\UpdateServer\Headers;
+use Suth\UpdateServer\Package;
+use Suth\UpdateServer\Request;
+use Suth\UpdateServer\FileCache;
+use Suth\UpdateServer\InvalidPackageException;
 
 class UpdateServer
 {

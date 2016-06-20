@@ -2,6 +2,8 @@
 
 namespace Suth\UpdateServer;
 
+use Suth\UpdateServer\Cache;
+
 class FileCache implements Cache
 {
 	protected $cacheDirectory;
