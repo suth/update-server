@@ -1,25 +1,23 @@
 WP Update Server
 ================
 
-A custom update API for WordPress plugins and themes. 
+Custom update API package for WordPress plugins and themes.
+
+Based on [WP Update Server by Yahnis Elsts](https://github.com/YahnisElsts/wp-update-server)
 
 Features
 --------
-* **Provide updates for plugins and themes.**    
+**Provide updates for plugins and themes.**    
 
-  From the users perspective, the updates work just like they do with plugins and themes listed in the official WordPress.org directory.
-* **Easy to set up.**
+From the users perspective, the updates work just like they do with plugins and themes listed in the official WordPress.org directory.
 
-  Just upload the script directory to your server and drop a plugin or theme ZIP in the `packages` subdirectory. Now you have a working update API at `http://yourserver.com/wp-update-server/?action=get_metadata&slug=your-plugin`.
-* **Easy to integrate** with existing plugins and themes.
+**Easy to integrate** with existing plugins and themes.
 
-  All it takes is about 5 lines of code. See the [plugin update checker](http://w-shadow.com/blog/2010/09/02/automatic-updates-for-any-plugin/) and [theme update checker](http://w-shadow.com/blog/2011/06/02/automatic-updates-for-commercial-themes/) docs for details, or just scroll down to the "Getting Started" section for the short version.
-* **Minimal server requirements.**
+All it takes is about 5 lines of code. See the [plugin update checker](http://w-shadow.com/blog/2010/09/02/automatic-updates-for-any-plugin/) and [theme update checker](http://w-shadow.com/blog/2011/06/02/automatic-updates-for-commercial-themes/) docs for details, or just scroll down to the "Getting Started" section for the short version.
 
-  The server component requires PHP 5.3+ and the Zip extension. The client library only requires PHP 5.2 - same as the current version of WordPress.
-* **Designed for extensibility.**
+**Designed for extensibility.**
 
-  Want to secure your upgrade download links? Or use a custom logger or cache? Maybe your plugin doesn't have a standard `readme.txt` and you'd prefer to load the changelog and other update meta from the database instead? Create your own customized server by extending the `Wpup_UpdateServer` class. See examples below.
+Want to secure your upgrade download links? Or use a custom logger or cache? Maybe your plugin doesn't have a standard `readme.txt` and you'd prefer to load the changelog and other update meta from the database instead? Create your own customized server by extending the `Wpup_UpdateServer` class. See examples below.
   	
 Getting Started
 ---------------
@@ -51,52 +49,11 @@ If you put everything at the root, update notifications may show up just fine, b
 
 ### Integrating with Plugins
 
-Now that you have the server ready to go, the next step is to make your plugin query it for updates. We'll use the [plugin-update-checker](https://github.com/YahnisElsts/plugin-update-checker) library to achieve that.
-
-1. Download the update checker.
-2. Move the `plugin-update-checker` directory to your plugin's directory.
-3. Add the following code to your main plugin file:
-
-   ```php
-require 'path/to/plugin-update-checker/plugin-update-checker.php';
-$MyUpdateChecker = PucFactory::buildUpdateChecker(
-    'http://example.com/wp-update-server/?action=get_metadata&slug=plugin-directory-name', //Metadata URL.
-    __FILE__, //Full path to the main plugin file.
-    'plugin-directory-name' //Plugin slug. Usually it's the same as the name of the directory.
-);
-```
-4. When you're ready to release an update, just zip the plugin directory as described above and put it in the `packages` subdirectory on the server (overwriting the previous version). 
-
-The library will check for updates twice a day by default. If the update checker discovers that a new version is available, it will display an update notification in the WordPress Dashboard and the user will be able to install it by clicking the "upgrade now" link. It works just like with plugins hosted on WordPress.org from the users' perspective. 
-
-See the [update checker docs](http://w-shadow.com/blog/2010/09/02/automatic-updates-for-any-plugin/) for detailed usage instructions and and more examples.
-
-**Tip:** Create a `readme.txt` file for your plugin. If you have one, the update server will use it to generate the plugin information page that users see when they click the "View version x.y.z details" link in an update notification. The readme must conform to [the WordPress.org readme standard](http://wordpress.org/extend/plugins/about/readme.txt).
-
-**Note:** Your plugin or theme must be active for updates to work. One consequence of this is that on a multisite installation updates will only show up if your plugin is active on the main site. This is because only plugins that are enabled on the main site are loaded in the network admin. For reference, the main site is the one that has the path "/" in the *All Sites* list. 
+See the [update checker docs](http://w-shadow.com/blog/2010/09/02/automatic-updates-for-any-plugin/) for detailed usage instructions and and examples.
 
 ### Integrating with Themes
 
-1. Download the [theme update checker](http://w-shadow.com/blog/2011/06/02/automatic-updates-for-commercial-themes/) library.
-2. Place the `theme-updates` directory in your `includes` or the equivalent.
-3. Add this snippet to your `functions.php`:
-
-   ```php
-require 'path/to/theme-updates/theme-update-checker.php';
-$MyThemeUpdateChecker = new ThemeUpdateChecker(
-    'theme-directory-name', //Theme slug. Usually the same as the name of its directory.
-    'http://example.com/wp-update-server/?action=get_metadata&slug=theme-directory-name' //Metadata URL.
-);
-```
-4. Add a `Details URI` header to your `style.css`:
-
-  ```Details URI: http://example.com/my-theme-changelog.html```
-  
-  This header specifies the page that the user will see if they click the "View version x.y.z details" link in an update notification. Set it to the URL of your "What’s New In Version z.y.z" page or the theme homepage.
-
-Like with plugin updates, the theme update checker will query the server for theme details every 12 hours and display an update notification in the WordPress Dashboard if a new version is available.
-
-See the [theme update checker docs](http://w-shadow.com/blog/2011/06/02/automatic-updates-for-commercial-themes/) for more information.
+See the [theme update checker docs](http://w-shadow.com/blog/2011/06/02/automatic-updates-for-commercial-themes/) for information and examples.
 	
 ## Advanced Topics
 
