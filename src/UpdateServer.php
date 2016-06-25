@@ -19,16 +19,16 @@ class UpdateServer
 
 	public function __construct($serverUrl = null, $serverDirectory = null) {
 		if ( $serverDirectory === null ) {
-			$serverDirectory = realpath(__DIR__ . '/..');
+			$serverDirectory = realpath(__DIR__ . '/../storage');
 		}
 		if ( $serverUrl === null ) {
 			$serverUrl = self::guessServerUrl();
 		}
 
 		$this->serverUrl = $serverUrl;
-		$this->packageDirectory = $serverDirectory . '/storage/packages';
-		$this->logDirectory = $serverDirectory . '/storage/logs';
-		$this->cache = new FileCache($serverDirectory . '/storage/cache');
+		$this->packageDirectory = $serverDirectory . '/packages';
+		$this->logDirectory = $serverDirectory . '/logs';
+		$this->cache = new FileCache($serverDirectory . '/cache');
 	}
 
 	/**
