@@ -2,6 +2,7 @@
 
 namespace Suth\UpdateServer;
 
+use ZipArchive;
 use Michelf\Markdown;
 
 class WordPressPackageParser
