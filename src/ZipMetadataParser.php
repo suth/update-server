@@ -3,6 +3,7 @@
 namespace Suth\UpdateServer;
 
 use Suth\UpdateServer\Cache;
+use Suth\UpdateServer\WordPressPackageParser;
 use Suth\UpdateServer\InvalidPackageException;
 
 class ZipMetadataParser
@@ -121,7 +122,7 @@ class ZipMetadataParser
 	 * @throws InvalidPackageException if the input file can't be parsed as a plugin or theme.
 	 */
 	protected function extractMetadata(){
-		$this->packageInfo = WshWordPressPackageParser::parsePackage($this->filename, true);
+		$this->packageInfo = WordPressPackageParser::parsePackage($this->filename, true);
 		if ( is_array($this->packageInfo) && $this->packageInfo !== array() ){
 			$this->setInfoFromHeader();
 			$this->setInfoFromReadme();
